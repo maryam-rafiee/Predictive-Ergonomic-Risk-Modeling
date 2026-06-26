@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
@@ -67,5 +68,26 @@ plt.colorbar()
 plt.title("Confusion Matrix")
 plt.xlabel("Predicted Label")
 plt.ylabel("True Label")
+
+plt.show()
+# Feature Importance
+importances = model.feature_importances_
+
+indices = np.argsort(importances)[::-1]
+
+print("\nTop 10 Most Important Features:\n")
+
+for i in range(10):
+    print(f"{i+1}. Feature {indices[i]} Importance: {importances[indices[i]]:.4f}")
+# Plot Top 10 Feature Importances
+top10 = indices[:10]
+
+plt.figure(figsize=(10,5))
+plt.bar(range(10), importances[top10])
+plt.xticks(range(10), top10, rotation=45)
+plt.xlabel("Feature Index")
+plt.ylabel("Importance")
+plt.title("Top 10 Most Important Features")
+plt.tight_layout()
 
 plt.show()
