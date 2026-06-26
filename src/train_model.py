@@ -1,6 +1,10 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import confusion_matrix
+
 
 # خواندن نام ویژگی‌ها
 features = pd.read_csv(
@@ -54,3 +58,14 @@ print("Accuracy:", accuracy)
 
 print("\nClassification Report:")
 print(classification_report(y_test, predictions))
+cm = confusion_matrix(y_test, predictions)
+
+plt.figure(figsize=(8,6))
+plt.imshow(cm, cmap="Blues")
+plt.colorbar()
+
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted Label")
+plt.ylabel("True Label")
+
+plt.show()
