@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report
 
 # خواندن نام ویژگی‌ها
 features = pd.read_csv(
@@ -51,3 +51,6 @@ predictions = model.predict(X_test)
 accuracy = accuracy_score(y_test, predictions)
 
 print("Accuracy:", accuracy)
+
+print("\nClassification Report:")
+print(classification_report(y_test, predictions))
