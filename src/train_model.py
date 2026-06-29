@@ -1,10 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import joblib
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import GridSearchCV
 
 
 # خواندن نام ویژگی‌ها
@@ -44,10 +46,29 @@ y_test = pd.read_csv(
 ).values.ravel()
 
 # ساخت مدل
-model = RandomForestClassifier(random_state=42)
+param_grid = {
+    "n_estimators": [100, 200],
+    "max_depth": [10, 20, None]
+}
+
+grid = GridSearchCV(
+    RandomForestClassifier(random_state=42),
+    param_grid,
+    cv=3,
+    scoring="accuracy",
+    n_jobs=-1
+)
+model = RandomForestClassifier(
+    n_estimators=300,
+    max_depth=20,
+    random_state=42)
+
 
 # آموزش مدل
-model.fit(X_train, y_train)
+grid.fit(X_train, y_train)
+model = grid.best_estimator_
+
+print("Best Parameters:", grid.best_params_)
 
 # پیش‌بینی
 predictions = model.predict(X_test)
@@ -91,3 +112,5 @@ plt.title("Top 10 Most Important Features")
 plt.tight_layout()
 
 plt.show()
+joblib.dump(model, "results/random_forest_model.pkl")
+print("Model saved successfully!")
